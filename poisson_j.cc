@@ -32,9 +32,9 @@ int main() {
   long double delta;
   int count = 0;
   double new_count;
-  double resolution = 0.001;
+  double resolution = 0.0001;
   double starting_value = 2;
-  double stoping_value = 6;
+  double stoping_value = 5;
   double unc_method1;
   long double lambda;
   double ndof = 233;
