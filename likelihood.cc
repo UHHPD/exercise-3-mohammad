@@ -12,23 +12,23 @@ using namespace std;
 
 double poisson(double, int);
 double mean_calculator(vector<int>);
-long double prob(vector<int>, double);
+double prob(vector<int>, double);
 double uncertainty_calculation(vector<int>);
 
 int main() {
   vector<int> total_data;
-  vector<long double> likelihoods;
+  vector<double> likelihoods;
   ifstream raw_data;
   ofstream output;
   ofstream output2, output3;
   int col1;
   double mean;
-  long double likelihood;
+  double likelihood;
   double best_log_like;
   double est_mean;
-  long double result;
-  long double ln_results;
-  long double delta;
+  double result;
+  double ln_results;
+  double delta;
   int count = 0;
   double new_count;
   double resolution = 0.1;
@@ -96,8 +96,8 @@ double mean_calculator(vector<int> zahlen){
 }
 
   
-long double prob(vector<int> zahlen, double mean){
-  long double likelihood;
+double prob(vector<int> zahlen, double mean){
+  double likelihood;
   double poisson_value;
   likelihood = 1;
   for (int k : zahlen){
