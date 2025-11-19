@@ -15,6 +15,8 @@ double mean_calculator(vector<int>);
 long double prob(vector<int>, double);
 double uncertainty_calculation(vector<int>);
 long double lambda_calculation(vector<int>, double);
+vector<int> abundance_calculator(ifstream&);
+vector<double> poisson_collector(vector<int>);
 
 int main() {
   vector<int> total_data;
@@ -32,20 +34,40 @@ int main() {
   long double delta;
   int count = 0;
   double new_count;
-  double resolution = 0.0001;
-  double starting_value = 2;
-  double stoping_value = 5;
+  double resolution = 0.001;
+  double starting_value = 1;
+  double stoping_value = 6;
   double unc_method1;
   long double lambda;
   double ndof = 233;
   double z;
-  
+  vector<int> zaehler(11);
+  vector<double> poisson_estimations(11);
+  ifstream summs_file;
+  ofstream previous_output_file;
+  ofstream previous_output_file2;
+
   
   
   raw_data.open("datensumme.txt");
   output.open("likelihood.txt");
   output2.open("nll.txt");
   output3.open("deltanll.txt");
+  previous_output_file.open("hist.txt");
+  previous_output_file2.open("histpoi.txt");
+
+
+  zaehler = abundance_calculator(raw_data);
+  poisson_estimations = poisson_collector(zaehler);
+  
+  for(int i=0; i< zaehler.size(); i++){
+    //cout<< i << " : " << zaehler[i]<<endl;
+    previous_output_file << i << '\t' << zaehler[i] << endl;
+    previous_output_file2 << i << '\t' << zaehler[i] << '\t' << poisson_estimations[i] << endl;
+    cout << i << '\t' << zaehler[i] << '\t' << poisson_estimations[i] << endl;
+  }
+
+
   
   while(raw_data>>col1)
     total_data.push_back(col1);
@@ -85,6 +107,8 @@ int main() {
   output.close();
   output2.close();
   output3.close();
+  previous_output_file.close();
+  previous_output_file2.close();
 
 
   return 0;
@@ -138,4 +162,32 @@ long double lambda_calculation(vector<int> zahlen, double mean){
         lambda *= poisson(mean, k)/poisson(k, k);
   }
   return lambda;
+}
+
+
+vector<int> abundance_calculator(ifstream& file){
+  vector<int> abund_vect(11);
+  int col1;
+
+  while(file >> col1)
+    abund_vect[col1] += 1;
+  return abund_vect;
+}
+
+
+vector<double> poisson_collector(vector<int> hists){
+  vector<double> poisson_values(hists.size());
+  double mean, sum_games, sum_goals;
+
+  sum_goals = 0.;
+  sum_games = accumulate(hists.begin(), hists.end(), 0.0);
+  for(int i=0; i < hists.size(); i++)
+    sum_goals += (hists[i] * i);
+  
+  mean = sum_goals / sum_games;  
+  
+  for(int i=0; i < hists.size(); i++)
+    poisson_values[i] = poisson(mean, i) * sum_games;
+
+  return poisson_values;
 }
