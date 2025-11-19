@@ -31,8 +31,8 @@ int main() {
   long double delta;
   int count = 0;
   double new_count;
-  double resolution = 0.001;
-  double starting_value = 2;
+  double resolution = 0.1;
+  double starting_value = 0;
   double stoping_value = 6;
   double unc_method1;
   
@@ -66,9 +66,9 @@ int main() {
   }
   new_count = double(count) * (resolution);
   unc_method1  = uncertainty_calculation(total_data);
-  cout << "statistic uncertainty:"<<unc_method1<<endl;
-  cout<< " calculated uncertainty:"<<new_count<<endl;
-
+  //cout << "statistic uncertainty:"<<unc_method1<<endl;
+  //cout<< " calculated uncertainty:"<<new_count<<endl;
+  cout << "likelihood: "<<likelihood<<endl;
 
   
   raw_data.close();
