@@ -59,12 +59,16 @@ int main() {
 
   zaehler = abundance_calculator(raw_data);
   poisson_estimations = poisson_collector(zaehler);
+
+  raw_data.clear();
+  raw_data.seekg(0, ios::beg);
+
   
   for(int i=0; i< zaehler.size(); i++){
     //cout<< i << " : " << zaehler[i]<<endl;
     previous_output_file << i << '\t' << zaehler[i] << endl;
     previous_output_file2 << i << '\t' << zaehler[i] << '\t' << poisson_estimations[i] << endl;
-    cout << i << '\t' << zaehler[i] << '\t' << poisson_estimations[i] << endl;
+    cout << i << '\t' << zaehler[i] <<endl; //'\t' << poisson_estimations[i] << endl;
   }
 
 
