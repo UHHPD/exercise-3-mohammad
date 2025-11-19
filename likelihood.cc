@@ -14,6 +14,8 @@ double poisson(double, int);
 double mean_calculator(vector<int>);
 double prob(vector<int>, double);
 double uncertainty_calculation(vector<int>);
+long double lambda_calculation(vector<int>, double);
+
 
 int main() {
   vector<int> total_data;
@@ -35,6 +37,9 @@ int main() {
   double starting_value = 0;
   double stoping_value = 6;
   double unc_method1;
+  long double lambda;
+  double ndof = 233;
+  double z;
   
   
   
@@ -70,7 +75,12 @@ int main() {
   //cout<< " calculated uncertainty:"<<new_count<<endl;
   cout << "likelihood: "<<likelihood<<endl;
 
-  
+  lambda = lambda_calculation(total_data, mean);
+  cout <<"calculated lambda: "<< lambda<<endl;
+  cout <<"calculated -2 ln lambda: "<< -2*log(lambda)<<endl;
+  z = (-2*log(lambda)-ndof)/sqrt(2*ndof);
+  cout<<"calculated z: "<< z<<endl;
+
   raw_data.close();
   output.close();
   output2.close();
@@ -116,7 +126,15 @@ double poisson(double mean, int observation){
   mu_ka = pow(mean, observation);
   exp_mu = exp(-1 * mean);
   pois = (mu_ka * exp_mu) / (gamma);
-  pois;
   return pois;
+}
+
+long double lambda_calculation(vector<int> zahlen, double mean){
+    long double lambda;
+    lambda = 1;
+    for (int k : zahlen){
+        lambda *= poisson(mean, k)/poisson(k, k);
+  }
+  return lambda;
 }
  

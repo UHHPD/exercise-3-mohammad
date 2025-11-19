@@ -14,7 +14,6 @@ double poisson(double, int);
 double mean_calculator(vector<int>);
 long double prob(vector<int>, double);
 double uncertainty_calculation(vector<int>);
-long double lambda_calculation(vector<int>, double);
 vector<int> abundance_calculator(ifstream&);
 vector<double> poisson_collector(vector<int>);
 
@@ -38,9 +37,6 @@ int main() {
   double starting_value = 1;
   double stoping_value = 6;
   double unc_method1;
-  long double lambda;
-  double ndof = 233;
-  double z;
   vector<int> zaehler(11);
   vector<double> poisson_estimations(11);
   ifstream summs_file;
@@ -99,12 +95,6 @@ int main() {
   cout << "statistic uncertainty:"<<unc_method1<<endl;
   cout<< " calculated uncertainty:"<<new_count<<endl;
 
-  lambda = lambda_calculation(total_data, mean);
-  cout <<"calculated lambda: "<< lambda<<endl;
-  cout <<"calculated -2 ln lambda: "<< -2*log(lambda)<<endl;
-  z = (-2*log(lambda)-ndof)/sqrt(2*ndof);
-  cout<<"calculated z: "<< z<<endl;
-
 
   
   raw_data.close();
@@ -145,8 +135,6 @@ long double prob(vector<int> zahlen, double mean){
   return likelihood;
 }
     
-
-
 double poisson(double mean, int observation){
   int gamma;
   double mu_ka, exp_mu, pois;
@@ -154,20 +142,8 @@ double poisson(double mean, int observation){
   mu_ka = pow(mean, observation);
   exp_mu = exp(-1 * mean);
   pois = (mu_ka * exp_mu) / (gamma);
-  pois;
   return pois;
 }
-
-
-long double lambda_calculation(vector<int> zahlen, double mean){
-    long double lambda;
-    lambda = 1;
-    for (int k : zahlen){
-        lambda *= poisson(mean, k)/poisson(k, k);
-  }
-  return lambda;
-}
-
 
 vector<int> abundance_calculator(ifstream& file){
   vector<int> abund_vect(11);
