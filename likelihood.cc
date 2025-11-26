@@ -29,9 +29,9 @@ int main() {
   int col1;
   double starting_value = 0;
   double stoping_value = 6;
+  //4.1a)
   while(raw_data>>col1)
     total_data.push_back(col1);
-  
   double mean;
   mean = mean_calculator(total_data);
   double likelihood;
@@ -39,6 +39,7 @@ int main() {
   double best_log_like;
   best_log_like = -2 * log(likelihood);
   
+  //4.1b,c,d)
   double est_mean;
   est_mean = starting_value;
   double result;
@@ -67,6 +68,7 @@ int main() {
   //cout<< " calculated uncertainty:"<<new_count<<endl;
   cout << "likelihood: "<<likelihood<<endl;
 
+  //4.1e
   long double lambda;
   lambda = lambda_calculation(total_data, mean);
   cout <<"calculated lambda: "<< lambda<<endl;
