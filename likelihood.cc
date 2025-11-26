@@ -18,66 +18,61 @@ long double lambda_calculation(vector<int>, double);
 
 
 int main() {
-  vector<int> total_data;
-  vector<double> likelihoods;
   ifstream raw_data;
   ofstream output;
   ofstream output2, output3;
-  int col1;
-  double mean;
-  double likelihood;
-  double best_log_like;
-  double est_mean;
-  double result;
-  double ln_results;
-  double delta;
-  int count = 0;
-  double new_count;
-  double resolution = 0.1;
-  double starting_value = 0;
-  double stoping_value = 6;
-  double unc_method1;
-  long double lambda;
-  double ndof = 233;
-  double z;
-  
-  
-  
   raw_data.open("datensumme.txt");
   output.open("likelihood.txt");
   output2.open("nll.txt");
   output3.open("deltanll.txt");
-  
+  vector<int> total_data;
+  int col1;
+  double starting_value = 0;
+  double stoping_value = 6;
   while(raw_data>>col1)
     total_data.push_back(col1);
   
+  double mean;
   mean = mean_calculator(total_data);
+  double likelihood;
   likelihood = prob(total_data, mean);
+  double best_log_like;
   best_log_like = -2 * log(likelihood);
   
-
+  double est_mean;
   est_mean = starting_value;
+  double result;
+  double ln_results;
+  double delta;
+  int count = 0;
+  double resolution = 0.1;
   while(est_mean < stoping_value){
     result = prob(total_data, est_mean);
     ln_results = -2 * log(result);
     delta = ln_results - best_log_like;
     if (delta < 1.0)
       count++;
+    vector<double> likelihoods;
     likelihoods.push_back(result);
     output<<est_mean<<'\t'<<result<<endl;
     output2<<est_mean<<'\t'<<ln_results<<endl;
     output3<<est_mean<< '\t'<<delta<<endl;
     est_mean +=  resolution;
   }
+  double new_count;
   new_count = double(count) * (resolution);
+  double unc_method1;
   unc_method1  = uncertainty_calculation(total_data);
   //cout << "statistic uncertainty:"<<unc_method1<<endl;
   //cout<< " calculated uncertainty:"<<new_count<<endl;
   cout << "likelihood: "<<likelihood<<endl;
 
+  long double lambda;
   lambda = lambda_calculation(total_data, mean);
   cout <<"calculated lambda: "<< lambda<<endl;
   cout <<"calculated -2 ln lambda: "<< -2*log(lambda)<<endl;
+  double ndof = 233;
+  double z;
   z = (-2*log(lambda)-ndof)/sqrt(2*ndof);
   cout<<"calculated z: "<< z<<endl;
 
