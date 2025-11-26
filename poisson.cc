@@ -37,7 +37,7 @@ int main() {
   raw_data.clear();
   raw_data.seekg(0, ios::beg);
 
-  
+  // 3.1abc)
   for(int i=0; i< zaehler.size(); i++){
     //cout<< i << " : " << zaehler[i]<<endl;
     previous_output_file << i << '\t' << zaehler[i] << endl;
@@ -46,87 +46,88 @@ int main() {
   }
 
 
-  vector<int> total_data;
-  int col1;
-  while(raw_data>>col1)
-    total_data.push_back(col1);
+//   vector<int> total_data;
+//   int col1;
+//   while(raw_data>>col1)
+//     total_data.push_back(col1);
   
-  double mean;
-  mean = mean_calculator(total_data);
-  long double likelihood;
-  likelihood = prob(total_data, mean);
-  double best_log_like;
-  best_log_like = -2 * log(likelihood);
+//   double mean;
+//   mean = mean_calculator(total_data);
+//   long double likelihood;
+//   likelihood = prob(total_data, mean);
+//   double best_log_like;
+//   best_log_like = -2 * log(likelihood);
   
-  double est_mean;
-  double starting_value = 1;
-  double stoping_value = 6;
-  est_mean = starting_value;
-  long double result;
-  long double ln_results;
-  long double delta;
-  int count = 0;
-  vector<long double> likelihoods;
-  double resolution = 0.001;
-  while(est_mean < stoping_value){
-    result = prob(total_data, est_mean);
-    ln_results = -2 * log(result);
-    delta = ln_results - best_log_like;
-    if (delta < 1.0)
-      count++;
-    likelihoods.push_back(result);
-    output<<est_mean<<'\t'<<result<<endl;
-    output2<<est_mean<<'\t'<<ln_results<<endl;
-    output3<<est_mean<< '\t'<<delta<<endl;
-    est_mean +=  resolution;
-  }
-  double new_count;
-  new_count = double(count) * (resolution);
-  double unc_method1;
-  unc_method1  = uncertainty_calculation(total_data);
-  cout << "statistic uncertainty:"<<unc_method1<<endl;
-  cout<< " calculated uncertainty:"<<new_count<<endl;
+//   double est_mean;
+//   double starting_value = 1;
+//   double stoping_value = 6;
+//   est_mean = starting_value;
+//   long double result;
+//   long double ln_results;
+//   long double delta;
+//   int count = 0;
+//   vector<long double> likelihoods;
+//   double resolution = 0.001;
+//   while(est_mean < stoping_value){
+//     result = prob(total_data, est_mean);
+//     ln_results = -2 * log(result);
+//     delta = ln_results - best_log_like;
+//     if (delta < 1.0)
+//       count++;
+//     likelihoods.push_back(result);
+//     output<<est_mean<<'\t'<<result<<endl;
+//     output2<<est_mean<<'\t'<<ln_results<<endl;
+//     output3<<est_mean<< '\t'<<delta<<endl;
+//     est_mean +=  resolution;
+//   }
+//   double new_count;
+//   new_count = double(count) * (resolution);
+//   double unc_method1;
+//   unc_method1  = uncertainty_calculation(total_data);
+//   cout << "statistic uncertainty:"<<unc_method1<<endl;
+//   cout<< " calculated uncertainty:"<<new_count<<endl;
 
 
   
-  raw_data.close();
-  output.close();
-  output2.close();
-  output3.close();
-  previous_output_file.close();
-  previous_output_file2.close();
+//   raw_data.close();
+//   output.close();
+//   output2.close();
+//   output3.close();
+//   previous_output_file.close();
+//   previous_output_file2.close();
 
 
   return 0;
 }
 
 
-double uncertainty_calculation(vector<int> zahlen){
-  double mean;
-  double unc;
-  mean = mean_calculator(zahlen);
-  unc = mean / sqrt(zahlen.size());
-  return unc;
-}
+// double uncertainty_calculation(vector<int> zahlen){
+//   double mean;
+//   double unc;
+//   mean = mean_calculator(zahlen);
+//   unc = mean / sqrt(zahlen.size());
+//   return unc;
+// }
 
-double mean_calculator(vector<int> zahlen){
-      double sum = accumulate(zahlen.begin(), zahlen.end(), 0.0);
-      double mean = sum / zahlen.size();
-      return mean;
-}
+// double mean_calculator(vector<int> zahlen){
+//       double sum = accumulate(zahlen.begin(), zahlen.end(), 0.0);
+//       double mean = sum / zahlen.size();
+//       return mean;
+// }
 
   
-long double prob(vector<int> zahlen, double mean){
-  long double likelihood;
-  double poisson_value;
-  likelihood = 1;
-  for (int k : zahlen){
-    poisson_value = poisson(mean, k);
-    likelihood *= poisson_value;
-  }
-  return likelihood;
-}
+// long double prob(vector<int> zahlen, double mean){
+//   long double likelihood;
+//   double poisson_value;
+//   likelihood = 1;
+//   for (int k : zahlen){
+//     poisson_value = poisson(mean, k);
+//     likelihood *= poisson_value;
+//   }
+//   return likelihood;
+// }
     
+// 3.1c)
 double poisson(double mean, int observation){
   int gamma;
   double mu_ka, exp_mu, pois;
