@@ -18,42 +18,20 @@ vector<int> abundance_calculator(ifstream&);
 vector<double> poisson_collector(vector<int>);
 
 int main() {
-  vector<int> total_data;
-  vector<long double> likelihoods;
   ifstream raw_data;
-  ofstream output;
-  ofstream output2, output3;
-  int col1;
-  double mean;
-  long double likelihood;
-  double best_log_like;
-  double est_mean;
-  long double result;
-  long double ln_results;
-  long double delta;
-  int count = 0;
-  double new_count;
-  double resolution = 0.001;
-  double starting_value = 1;
-  double stoping_value = 6;
-  double unc_method1;
-  vector<int> zaehler(11);
-  vector<double> poisson_estimations(11);
-  ifstream summs_file;
-  ofstream previous_output_file;
-  ofstream previous_output_file2;
-
-  
-  
   raw_data.open("datensumme.txt");
+  ofstream output,output2, output3;
   output.open("likelihood.txt");
   output2.open("nll.txt");
   output3.open("deltanll.txt");
+  ofstream previous_output_file;
   previous_output_file.open("hist.txt");
+  ofstream previous_output_file2;
   previous_output_file2.open("histpoi.txt");
 
-
+  vector<int> zaehler(11);
   zaehler = abundance_calculator(raw_data);
+  vector<double> poisson_estimations(11);
   poisson_estimations = poisson_collector(zaehler);
 
   raw_data.clear();
@@ -68,16 +46,28 @@ int main() {
   }
 
 
-  
+  vector<int> total_data;
+  int col1;
   while(raw_data>>col1)
     total_data.push_back(col1);
   
+  double mean;
   mean = mean_calculator(total_data);
+  long double likelihood;
   likelihood = prob(total_data, mean);
+  double best_log_like;
   best_log_like = -2 * log(likelihood);
   
-
+  double est_mean;
+  double starting_value = 1;
+  double stoping_value = 6;
   est_mean = starting_value;
+  long double result;
+  long double ln_results;
+  long double delta;
+  int count = 0;
+  vector<long double> likelihoods;
+  double resolution = 0.001;
   while(est_mean < stoping_value){
     result = prob(total_data, est_mean);
     ln_results = -2 * log(result);
@@ -90,7 +80,9 @@ int main() {
     output3<<est_mean<< '\t'<<delta<<endl;
     est_mean +=  resolution;
   }
+  double new_count;
   new_count = double(count) * (resolution);
+  double unc_method1;
   unc_method1  = uncertainty_calculation(total_data);
   cout << "statistic uncertainty:"<<unc_method1<<endl;
   cout<< " calculated uncertainty:"<<new_count<<endl;
